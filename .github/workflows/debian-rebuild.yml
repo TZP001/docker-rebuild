@@ -38,6 +38,12 @@ jobs:
           cd ${WORKDIR}/${TAG}
           docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt --output type=tar,dest=./my_images .
           ls -R
+          
+      - name: 生成
+        run: |
+          cd ${WORKDIR}/${TAG}
+          ls -R
+          
       - name: 生成release
         uses: softprops/action-gh-release@v1
         env:
