@@ -34,7 +34,7 @@ jobs:
           
       - name: 生成镜像
         run: |
-          docker build -t ${DEBIAN_IMAGE}_rebuilt 
+          docker buildx build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt 
           
       - name: 上传release
         uses: actions/upload-release-asset@v1
