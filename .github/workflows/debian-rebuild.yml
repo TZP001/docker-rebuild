@@ -24,13 +24,14 @@ jobs:
       - name: 下载debian仓库
         run: |
           git clone -b ${BRANCH} ${REPO_URL}
-          cd docker-debian-artifacts
-          cd ${TAG}
           
       - name: 添加文件
         run: |
+          cd docker-debian-artifacts
+          cd ${TAG}
           mkdir -p ${DIY_DIR}
-          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ${DIY_DIR}/${DIY_SH}
+          ls 
+          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} docker-debian-artifacts/${TAG}/${DIY_DIR}/${DIY_SH}
           
       - name: 生成镜像
         run: |
