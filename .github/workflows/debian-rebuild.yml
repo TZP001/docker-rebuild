@@ -29,12 +29,14 @@ jobs:
         run: |
           cd docker-debian-artifacts
           cd ${TAG}
+          ls
           mkdir -p ${DIY_DIR}
           cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./${DIY_DIR}/${DIY_SH}
           
       - name: 生成镜像
         run: |
-          docker buildx build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt .
+          ls
+          docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt .
           
       - name: 上传release
         uses: actions/upload-release-asset@v1
