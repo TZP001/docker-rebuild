@@ -22,7 +22,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Download specified Debian image
+      - name: 下载镜像文件
         if: ${{ startsWith(github.ref,'refs/tags/') }}
         run: |
           docker pull ${DEBIAN_IMAGE}:${TAG}
@@ -30,8 +30,9 @@ jobs:
 
       - name: 添加文件
         run: |
-          mkdir -p /${DIY_DIR}
-          touch /${DIY_DIR}/${DIY_SH}
+          sudo mkdir -p /${DIY_DIR}
+          sudo touch /${DIY_DIR}/${DIY_SH}
+          sudo chmod 755 /${DIY_DIR}/${DIY_SH}
           echo "NEW_DEBIAN_IMAGE=${DEBIAN_IMAGE}:${TAG}-${DIY}" >> $GITHUB_ENV
           docker cp /${DIY_DIR}/${DIY_SH} ${IMG_ID}:/
           
@@ -39,7 +40,7 @@ jobs:
         run: |
           docker buildx build --push --tag ${DEBIAN_IMAGE}_${TAG}:rebuilt --tag ${{ github.repository }}:${{ github.ref_name }}.
           
-      - name: Upload to release
+      - name: 上传release
         if: ${{ startsWith(github.ref,'refs/tags/') }}
         uses: actions/upload-release-asset@v1
         with:
