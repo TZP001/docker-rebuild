@@ -36,13 +36,10 @@ jobs:
       - name: 生成镜像
         run: |
           cd ${WORKDIR}/${TAG}
-          docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt --output type=tar,dest=./my_images .
-          ls -R
+          docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt
+          docker save -o ${DEBIAN_IMAGE}:${TAG}-rebuilt.tar ${DEBIAN_IMAGE}:${TAG}-rebuilt
+          ls
           
-      - name: 生成
-        run: |
-          cd ${WORKDIR}/${TAG}
-          ls -R
           
       - name: 生成release
         uses: softprops/action-gh-release@v1
@@ -50,4 +47,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${TAG}
-          files: ${WORKDIR}/${TAG}/${DEBIAN_IMAGE}_${TAG}_rebuilt.tar
+          files: ${WORKDIR}/${TAG}/${DEBIAN_IMAGE}:${TAG}-rebuilt.tar
