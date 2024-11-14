@@ -34,11 +34,11 @@ jobs:
         run: |
           docker build -t my_debian_bullseye.
           mkdir -p ${DIY_DIR}
-          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ${DIY_DIR}/aaa.sh
+          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ${DIY_DIR}/${DIY_SH}
           
       - name: 生成镜像
         run: |
-          docker build -t ${DEBIAN_IMAGE}_${TAG}:rebuilt 
+          docker build -t ${DEBIAN_IMAGE}_rebuilt 
           
       - name: 上传release
         uses: actions/upload-release-asset@v1
