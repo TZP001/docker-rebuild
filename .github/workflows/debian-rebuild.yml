@@ -1,9 +1,9 @@
 name: 重建Debian
 
 on:
-  push:
-    branches:
-      - main
+  repository_dispatch:
+  workflow_dispatch:
+  
 env:
   DEBIAN_IMAGE: debian
   TAG: bullseye
