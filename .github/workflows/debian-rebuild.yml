@@ -37,7 +37,7 @@ jobs:
         run: |
           cd ${WORKDIR}/${TAG}
           docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt .
-          ls -l var/lib/docker
+          ls -l /var/lib/docker
           ls -l docker.io/library/
           ls
           
