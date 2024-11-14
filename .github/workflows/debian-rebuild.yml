@@ -24,6 +24,7 @@ jobs:
 
       - name: Download specified Debian image
         if: ${{ startsWith(github.ref,'refs/tags/') }}
+        run: |
           docker pull ${DEBIAN_IMAGE}:${TAG}
           echo 'IMG_ID=$(docker images -qf "dangling=true" | head -1)' >> $GITHUB_ENV
 
