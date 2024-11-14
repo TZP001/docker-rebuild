@@ -38,9 +38,10 @@ jobs:
           cd ${WORKDIR}/${TAG}
           docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt .
           
-      - name: 上传release
-        uses: actions/upload-release-asset@v1
+      - name: 生成release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          asset_path: /${WORKDIR}/${TAG}/${DEBIAN_IMAGE}_${TAG}:rebuilt
-          asset_name: ${WORKDIR}/${TAG}/${DEBIAN_IMAGE}_${TAG}_rebuilt.tar
-          asset_content_type: application/vnd.docker.image.rootfs.diff.tar.gzip
+          tag_name: ${TAG}
+          files: ${WORKDIR}/${TAG}/${DEBIAN_IMAGE}_${TAG}_rebuilt.tar
