@@ -9,6 +9,7 @@ env:
   TAG: bullseye
   DIY_DIR: diy
   DIY_SH: novnc.sh
+  WORKDIR: debian
   BRANCH: dist-amd64
   REPO_URL: https://github.com/debuerreotype/docker-debian-artifacts
   TZ: Asia/Shanghai
@@ -23,19 +24,18 @@ jobs:
 
       - name: 下载debian仓库
         run: |
-          git clone -b ${BRANCH} ${REPO_URL}
+          git clone -b ${BRANCH} ${REPO_URL} ${WORKDIR}
           
       - name: 添加文件
         run: |
-          cd docker-debian-artifacts
+          cd ${WORKDIR}
           cd ${TAG}
-          ls
           mkdir -p ${DIY_DIR}
           cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./${DIY_DIR}/${DIY_SH}
           
       - name: 生成镜像
         run: |
-          ls
+          cd ${WORKDIR}/${TAG}
           docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt .
           
       - name: 上传release
