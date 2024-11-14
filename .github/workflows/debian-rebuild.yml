@@ -36,7 +36,7 @@ jobs:
       - name: 生成镜像
         run: |
           cd ${WORKDIR}/${TAG}
-          docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt
+          docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt .
           docker save -o ${DEBIAN_IMAGE}:${TAG}-rebuilt.tar ${DEBIAN_IMAGE}:${TAG}-rebuilt
           ls
           
