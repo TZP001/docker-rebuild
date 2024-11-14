@@ -32,7 +32,6 @@ jobs:
           
       - name: 添加文件
         run: |
-          docker build -t my_debian_bullseye.
           mkdir -p ${DIY_DIR}
           cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ${DIY_DIR}/${DIY_SH}
           
