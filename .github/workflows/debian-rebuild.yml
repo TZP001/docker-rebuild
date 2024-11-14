@@ -1,0 +1,48 @@
+name: 重建Debian
+
+on:
+  push:
+    branches:
+      - main
+env:
+  DEBIAN_IMAGE: debian
+  TAG: bullseye
+  DIY_DIR: diy
+  DIY_SH: novnc.sh
+  TZ: Asia/Shanghai
+  
+jobs:
+  download-add-rebuild-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Download specified Debian image
+        if: ${{ startsWith(github.ref,'refs/tags/') }}
+          docker pull ${DEBIAN_IMAGE}:${TAG}
+          echo 'IMG_ID=$(docker images -qf "dangling=true" | head -1)' >> $GITHUB_ENV
+
+      - name: 添加文件
+        run: |
+          mkdir -p /${DIY_DIR}
+          touch /${DIY_DIR}/${DIY_SH}
+          echo "NEW_DEBIAN_IMAGE=${DEBIAN_IMAGE}:${TAG}-${DIY}" >> $GITHUB_ENV
+          docker cp /${DIY_DIR}/${DIY_SH} ${IMG_ID}:/
+          
+      - name: 重建镜像
+        run: |
+          docker buildx build --push --tag ${DEBIAN_IMAGE}_${TAG}:rebuilt --tag ${{ github.repository }}:${{ github.ref_name }}.
+          
+      - name: Upload to release
+        if: ${{ startsWith(github.ref,'refs/tags/') }}
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${DEBIAN_IMAGE}_${TAG}:rebuilt
+          asset_name: ${DEBIAN_IMAGE}_${TAG}_rebuilt.tar
+          asset_content_type: application/vnd.docker.image.rootfs.diff.tar.gzip
