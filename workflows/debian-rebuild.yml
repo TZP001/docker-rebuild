@@ -1,0 +1,27 @@
+name: 重建Debian
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  download-add-rebuild:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download Docker image
+        run: |
+          docker pull debian
+
+      - name: Create and add /diy/grass.sh file
+        run: |
+          mkdir -p /diy
+          touch /diy/grass.sh
+          docker cp /diy/grass.sh <image-id>:/
+
+      - name: Rebuild Docker image
+        run: |
+          docker build -t <new-image-name>:<tag>.
