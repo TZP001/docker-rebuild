@@ -47,4 +47,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{TAG}}
-          files: ${{WORKDIR}{/${{TAG}}/${{DEBIAN_IMAGE}}:${{TAG}}-rebuilt.tar
+          files: ${{WORKDIR}}/${{TAG}}/${{DEBIAN_IMAGE}}:${{TAG}}-rebuilt.tar
