@@ -36,11 +36,8 @@ jobs:
       - name: 生成镜像
         run: |
           cd ${WORKDIR}/${TAG}
-          docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt .
-          ls -l /var/lib/docker
-          ls -l docker.io/library/
-          ls
-          
+          docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt --output type=tar,dest=./my_images.
+          ls -l
       - name: 生成release
         uses: softprops/action-gh-release@v1
         env:
