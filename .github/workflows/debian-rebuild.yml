@@ -30,8 +30,7 @@ jobs:
           cd docker-debian-artifacts
           cd ${TAG}
           mkdir -p ${DIY_DIR}
-          ls 
-          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} docker-debian-artifacts/${TAG}/${DIY_DIR}/${DIY_SH}
+          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./${DIY_DIR}/${DIY_SH}
           
       - name: 生成镜像
         run: |
