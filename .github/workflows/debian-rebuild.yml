@@ -25,14 +25,12 @@ jobs:
       - name: 下载镜像文件
         run: |
           docker pull ${DEBIAN_IMAGE}:${TAG}
-          echo "IMG_ID=$(docker images | grep -v IMAGE | awk '{print $3}')" >> $GITHUB_ENV
+          image_id=$(docker images | grep -v IMAGE | awk '{print $3}')
+          echo "IMG_ID=${image_id}" >> $GITHUB_ENV
 
       - name: 添加文件
         run: |
-          sudo mkdir -p /${DIY_DIR}
-          sudo touch /${DIY_DIR}/${DIY_SH}
-          sudo chmod 755 /${DIY_DIR}/${DIY_SH}
-          docker cp /${DIY_DIR}/${DIY_SH} ${IMG_ID}:/
+          docker cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ${IMG_ID}:/
           
       - name: 重建镜像
         run: |
