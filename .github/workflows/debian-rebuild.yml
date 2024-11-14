@@ -29,7 +29,7 @@ jobs:
       - name: 添加文件
         run: |
           image_id=$(docker images | grep -v IMAGE | awk '{print $3}')
-          docker cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ${image_id}:/
+          docker cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH}|- ${image_id}:/${DIY_SH}
           
       - name: 重建镜像
         run: |
