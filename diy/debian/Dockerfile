@@ -1,6 +1,8 @@
 FROM debian:bullseye as debian-diy
 
-COPY --from=debian-diy diy/debian/entrypoint.sh /debian/entrypoint.sh
+COPY diy/debian/entrypoint.sh /debian/entrypoint.sh
+
+COPY --from=debian-diy /debian/entrypoint.sh /debian/entrypoint.sh
 
 # 添加执行权限
 RUN chmod 777 /debian/entrypoint.sh
