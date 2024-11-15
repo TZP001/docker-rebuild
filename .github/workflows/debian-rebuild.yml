@@ -48,8 +48,10 @@ jobs:
           cd ${WORKDIR}
           cd ${TAG}
           echo "修改默认启动命令"
-          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./${DIY_SH}
-          echo ENTRYPOINT [\"./${DIY_SH}\"] >> ./Dockerfile
+          mkdir -p docker
+          echo "!docker" >> ./.dockerignore
+          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./docker/${DIY_SH}
+          echo ENTRYPOINT [\"./docker/${DIY_SH}\"] >> ./Dockerfile
       
       - name: 生成镜像
         id: tag
