@@ -18,4 +18,4 @@ EXPOSE 5800
 
 VOLUME ["/debian/scripts/"]
 
-CMD ["/debian/entrypoint.sh"]
+RUN test -f /debian/entrypoint.sh && CMD ["/debian/entrypoint.sh"]
