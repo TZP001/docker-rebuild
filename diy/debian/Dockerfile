@@ -1,21 +1,19 @@
-FROM debian:bullseye-alpine
-LABEL maintainer="tzp001"
-LABEL name="debianDiy"
-
-ENV TZ="Asia/Shanghai"
-
-RUN mkdir -p /debian && \
-    mkdir -p /debian/scripts
-    
-COPY diy/debian/entrypoint.sh /debian/entrypoint.sh
-
-# 添加执行权限
-RUN chmod 777 /debian/entrypoint.sh
-
-WORKDIR /debian/
-
-EXPOSE 5800
-
-VOLUME ["/debian/scripts/"]
-
-ENTRYPOINT ["/debian/entrypoint.sh"]
+# 使用Debian Bullseye (最新版本) 作为基础镜像
+FROM debian:bullseye-slim
+ 
+# 安装curl、gnupg2和iputils-ping
+RUN apt-get update && \
+    apt-get install -y curl gnupg2 iputils-ping && \
+    rm -rf /var/lib/apt/lists/*
+ 
+# 设置环境变量
+ENV LANG C.UTF-8
+ 
+# 设置工作目录
+WORKDIR /app
+ 
+# 将/app目录设为卷
+VOLUME /app
+ 
+# 设置容器启动时执行的命令
+CMD ["bash"]
