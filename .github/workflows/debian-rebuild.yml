@@ -24,6 +24,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: 下载debian仓库
         run: |
@@ -55,23 +58,27 @@ jobs:
           sed -i '/CMD \[\"bash\"\]/d' ./Dockerfile
           echo "ADD docker/${DIY_SH} /" >> ./Dockerfile
           echo "WORKDIR /docker" >> ./Dockerfile
-          # echo "ENTRYPOINT [\"./${DIY_SH}\"]" >> ./Dockerfile
+          echo "ENTRYPOINT [\"./${DIY_SH}\"]" >> ./Dockerfile
           echo CMD [\"bash\"] >> ./Dockerfile
           cat ./Dockerfile
-      
+          echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
+          
       - name: 生成镜像
-        id: tag
+        uses: docker/build-push-action@v3
+        with:
+          context: docker-debian-artifacts
+          push: false
+          tags: ${{ env.DEBIAN_IMAGE}}:${{ env.TAG }}-rebuilt
+
+      - name: 本地保存镜像
         run: |
-          cd ${WORKDIR}/${TAG}
-          docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt .
-          docker save -o ${DEBIAN_IMAGE}:${TAG}-rebuilt.tar ${DEBIAN_IMAGE}:${TAG}-rebuilt
-          echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
-          echo "UPLOAD_DIR=$PWD" >> $GITHUB_ENV          
+          docker save ${DEBIAN_IMAGE}:${TAG}-rebuilt -o ${DEBIAN_IMAGE}:${TAG}-rebuilt.tar
+          echo "UPLOAD_DIR=$PWD" >> $GITHUB_ENV
           
       - name: 生成release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{env.TAG}}-${{ steps.tag.outputs.release_tag }}
+          tag_name: ${{env.TAG}}-${{ env.release_tag }}
           files: ${{env.UPLOAD_DIR}}/${{env.DEBIAN_IMAGE}}:${{env.TAG}}-rebuilt.tar
