@@ -31,12 +31,3 @@ rm -rf /tmp/.X*lock
 rm -rf /tmp/.X*unix
 tightvncserver -geometry 1024x768 -depth 24 -port 5901
 websockify -D --web=/usr/share/novnc/ $NOVNCPort localhost:5901
-
-program="/usr/bin/grass"
- 
-if [ -f "$program" ]; then
-    # 文件存在，执行文件
-    "$program"
-else
-    echo "文件不存在，请先确保文件路径正确。"
-fi
