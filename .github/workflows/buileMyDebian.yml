@@ -40,7 +40,7 @@ jobs:
           context: .
           file: ./${{ env.DIY_DIR }}/Dockerfile
           push: true
-          tags: ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }}:rebuilt
+          tags: ${{ env.DEBIAN_IMAGE }}:latest
           load: true
           platforms: |
             linux/amd64
@@ -55,7 +55,7 @@ jobs:
         id: save
         if: steps.tag.outputs.status == 'success' && !cancelled()
         run: |
-          docker image save ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }} -o ${DEBIAN_IMAGE}-${TAG}-rebuilt.tar
+          docker image save ${{ env.DEBIAN_IMAGE }} -o ${DEBIAN_IMAGE}-${TAG}-rebuilt.tar
           echo "UPLOAD_DIR=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
           
