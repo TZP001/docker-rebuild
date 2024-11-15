@@ -69,6 +69,7 @@ jobs:
           context: ${{ env.WORKDIR }}/${{ env.TAG }}
           push: false
           tags: ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }}:rebuilt
+          load: true
           
       - name: 生成TAG
         id: tag
