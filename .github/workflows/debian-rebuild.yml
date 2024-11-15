@@ -48,4 +48,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{env.TAG}}-${{ steps.tag.outputs.release_tag }}
-          files: ${{env.UPLOAD_DIR}}/${{env.TAG}}/${{env.DEBIAN_IMAGE}}:${{env.TAG}}-rebuilt.tar
+          files: ${{env.UPLOAD_DIR}}/${{env.DEBIAN_IMAGE}}:${{env.TAG}}-rebuilt.tar
