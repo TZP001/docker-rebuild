@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM debian:bullseye
 LABEL maintainer="tzp001"
 LABEL name="debianDiy"
 
