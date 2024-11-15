@@ -26,12 +26,12 @@ expect << EOF
 	expect eof
 EOF
 
-pgrep -f novnc | xargs kill || true
-pgrep -f novnc | xargs kill || true
+pgrep -f novnc | xargs kill || true > /dev/null 2>&1 &
+pgrep -f novnc | xargs kill || true > /dev/null 2>&1 &
 rm -rf /tmp/.X*lock
 rm -rf /tmp/.X*unix
-tightvncserver -geometry 1024x768 -depth 24 -port 5901
-websockify -D --web=/usr/share/novnc/ $NOVNCPort localhost:5901
+nohup tightvncserver -geometry 1024x768 -depth 24 -port 5901 > /dev/null 2>&1 &
+nohup websockify -D --web=/usr/share/novnc/ $NOVNCPort localhost:5901 > /dev/null 2>&1 &
 
 echo -e "======================2. 检测自定义脚本是否存在========================\n"
 
