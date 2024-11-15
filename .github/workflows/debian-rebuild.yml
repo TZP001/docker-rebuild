@@ -66,7 +66,7 @@ jobs:
       - name: 生成镜像
         uses: docker/build-push-action@v3
         with:
-          context: docker-debian-artifacts
+          context: ${{ env.WORKDIR }}
           push: false
           tags: ${{ env.DEBIAN_IMAGE}}:${{ env.TAG }}-rebuilt
 
