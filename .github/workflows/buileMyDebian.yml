@@ -40,33 +40,33 @@ jobs:
           context: .
           file: ./${{ env.DIY_DIR }}/Dockerfile
           push: true
-          tags: ${{ env.DEBIAN_IMAGE }}:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.DEBIAN_IMAGE }}:latest
           load: true
           platforms: |
             linux/amd64
             
-      - name: 生成TAG
-        id: tag
-        run: |
-          echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
-          echo "status=success" >> $GITHUB_OUTPUT
+      # - name: 生成TAG
+      #   id: tag
+      #   run: |
+      #     echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
+      #     echo "status=success" >> $GITHUB_OUTPUT
 
-      - name: 本地保存镜像
-        id: save
-        if: steps.tag.outputs.status == 'success' && !cancelled()
-        run: |
-          docker image save ${{ env.DEBIAN_IMAGE }} -o ${DEBIAN_IMAGE}-${TAG}-rebuilt.tar
-          echo "UPLOAD_DIR=$PWD" >> $GITHUB_ENV
-          echo "status=success" >> $GITHUB_OUTPUT
+      # - name: 本地保存镜像
+      #   id: save
+      #   if: steps.tag.outputs.status == 'success' && !cancelled()
+      #   run: |
+      #     docker image save ${{ env.DEBIAN_IMAGE }} -o ${DEBIAN_IMAGE}-${TAG}-rebuilt.tar
+      #     echo "UPLOAD_DIR=$PWD" >> $GITHUB_ENV
+      #     echo "status=success" >> $GITHUB_OUTPUT
           
-      - name: 生成release
-        uses: softprops/action-gh-release@v1
-        if: steps.save.outputs.status == 'success' && !cancelled()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.TAG }}-${{ env.release_tag }}
-          files: ${{ env.UPLOAD_DIR }}/${{ env.DEBIAN_IMAGE }}-${{ env.TAG }}-rebuilt.tar
+      # - name: 生成release
+      #   uses: softprops/action-gh-release@v1
+      #   if: steps.save.outputs.status == 'success' && !cancelled()
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ env.TAG }}-${{ env.release_tag }}
+      #     files: ${{ env.UPLOAD_DIR }}/${{ env.DEBIAN_IMAGE }}-${{ env.TAG }}-rebuilt.tar
 
       - name: Delete Workflow Runs
         uses: GitRML/delete-workflow-runs@main
