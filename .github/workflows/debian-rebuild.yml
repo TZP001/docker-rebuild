@@ -68,25 +68,45 @@ jobs:
         with:
           context: ${{ env.WORKDIR }}/${{ env.TAG }}
           push: false
-          tags: ${{ env.DEBIAN_IMAGE}}:${{ env.TAG }}-rebuilt
+          tags: ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }}:${{ github.sha }}
           
-      - name: 生成TAG
-        id: tag
-        run: |
-          echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
-          echo "status=success" >> $GITHUB_OUTPUT
+      # - name: 生成TAG
+      #   id: tag
+      #   run: |
+      #     echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
+      #     echo "status=success" >> $GITHUB_OUTPUT
 
-      - name: 本地保存镜像
-        if: steps.tag.outputs.status == 'success' && !cancelled()
-        run: |
-          docker save ${DEBIAN_IMAGE}:${TAG}-rebuilt.tar -o ${DEBIAN_IMAGE}:${TAG}-rebuilt.tar
-          echo "UPLOAD_DIR=$PWD" >> $GITHUB_ENV
+      # - name: 本地保存镜像
+      #   id: save
+      #   if: steps.tag.outputs.status == 'success' && !cancelled()
+      #   run: |
+      #     docker save ${DEBIAN_IMAGE}:${TAG}-rebuilt -o ${DEBIAN_IMAGE}-${TAG}-rebuilt.tar
+      #     echo "UPLOAD_DIR=$PWD" >> $GITHUB_ENV
+      #     echo "status=success" >> $GITHUB_OUTPUT
           
-      - name: 生成release
-        uses: softprops/action-gh-release@v1
-        if: steps.tag.outputs.status == 'success' && !cancelled()
+      # - name: 生成release
+      #   uses: softprops/action-gh-release@v1
+      #   if: steps.save.outputs.status == 'success' && !cancelled()
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{env.TAG}}-${{ env.release_tag }}
+      #     files: ${{env.UPLOAD_DIR}}/${{env.DEBIAN_IMAGE}}:${{env.TAG}}-rebuilt.tar
+
+      - name: 上传镜像
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.sha }}
+          release_name: Release ${{ github.sha }}
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 上传release
+        uses: actions/upload-release-asset@v1
         with:
-          tag_name: ${{env.TAG}}-${{ env.release_tag }}
-          files: ${{env.UPLOAD_DIR}}/${{env.DEBIAN_IMAGE}}:${{env.TAG}}-rebuilt.tar
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }}.tar
+          asset_name: ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }}.tar
+          asset_content_type: application/x-tar
