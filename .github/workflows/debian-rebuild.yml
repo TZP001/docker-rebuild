@@ -15,12 +15,12 @@ env:
   TZ: Asia/Shanghai
   
 jobs:
-  download-add-rebuild-upload:
+  debianRebuild:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@main
 
       - name: 下载debian仓库
         run: |
