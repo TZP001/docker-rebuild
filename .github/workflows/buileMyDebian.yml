@@ -28,7 +28,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v3
         with:
-          context: ${{ env.DIY_DIR }}/${{ env.DEBIAN_IMAGE }}
+          context: ${{ env.DIY_DIR }}
           push: false
           tags: ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }}:rebuilt
           load: true
@@ -46,7 +46,6 @@ jobs:
         id: save
         if: steps.tag.outputs.status == 'success' && !cancelled()
         run: |
-          cd ${WORKDIR}
           docker image save ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }} -o ${DEBIAN_IMAGE}-${TAG}-rebuilt.tar
           echo "UPLOAD_DIR=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
@@ -59,3 +58,9 @@ jobs:
         with:
           tag_name: ${{ env.TAG }}-${{ env.release_tag }}
           files: ${{ env.UPLOAD_DIR }}/${{ env.DEBIAN_IMAGE }}-${{ env.TAG }}-rebuilt.tar
+
+      - name: Delete Workflow Runs
+        uses: GitRML/delete-workflow-runs@main
+        with:
+          retain_days: 30
+          keep_minimum_runs: 10
