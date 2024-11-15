@@ -34,6 +34,7 @@ jobs:
           cd ${WORKDIR}
           cd ${TAG}
           echo "解压 rootfs.tar.xz 文件"
+          mkdir -p tmp_tar_dir
           tar -xf rootfs.tar.xz -C tmp_tar_dir
           mkdir -p tmp_tar_dir/${DIY_DIR}
           cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./tmp_tar_dir/${DIY_DIR}/${DIY_SH}
