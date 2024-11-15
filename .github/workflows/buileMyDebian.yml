@@ -1,4 +1,4 @@
-name: 重建Debian
+name: DIY Debian
 
 on:
   repository_dispatch:
@@ -8,10 +8,6 @@ env:
   DEBIAN_IMAGE: debian
   TAG: bullseye
   DIY_DIR: diy/debian
-  DIY_SH: docker-entrypoint.sh
-  WORKDIR: debian
-  BRANCH: dist-amd64
-  REPO_URL: https://github.com/debuerreotype/docker-debian-artifacts
   TZ: Asia/Shanghai
   
 jobs:
@@ -27,49 +23,19 @@ jobs:
         
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: 下载debian仓库
-        run: |
-          git clone -b ${BRANCH} ${REPO_URL} ${WORKDIR}
-          
-      # - name: 直接添加文件进内部
-      #   run: |
-      #     cd ${WORKDIR}
-      #     cd ${TAG}
-      #     echo "解压 rootfs.tar.xz 文件"
-      #     mkdir -p tmp_tar_dir
-      #     tar -xf rootfs.tar.xz -C tmp_tar_dir
-      #     mkdir -p tmp_tar_dir/${DIY_DIR}
-      #     cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./tmp_tar_dir/${DIY_DIR}/${DIY_SH}
-      #     sudo chmod 755 ./tmp_tar_dir/${DIY_DIR}/${DIY_SH}
-      #     cd tmp_tar_dir
-      #     echo "重新打包 rootfs.tar.xz 文件"
-      #     tar -cJf ../rootfs.tar.xz .
-
-      - name: 添加启动脚本
-        run: |
-          cd ${WORKDIR}
-          cd ${TAG}
-          echo "修改默认启动命令"
-          mkdir -p docker
-          echo "!docker" >> .dockerignore
-          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./docker/${DIY_SH}
-          sudo chmod 755 ./docker/${DIY_SH}
-          sed -i '/CMD \[\"bash\"\]/d' ./Dockerfile
-          echo "ADD docker/${DIY_SH} /" >> ./Dockerfile
-          echo "WORKDIR /docker" >> ./Dockerfile
-          echo "ENTRYPOINT [\"./${DIY_SH}\"]" >> ./Dockerfile
-          cat ./Dockerfile
           
       - name: 生成镜像
         id: docker_build
         uses: docker/build-push-action@v3
         with:
-          context: ${{ env.WORKDIR }}/${{ env.TAG }}
+          context: ${{ env.DIY_DIR }}/${{ env.DEBIAN_IMAGE }}
           push: false
           tags: ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }}:rebuilt
           load: true
-          
+          platforms: |
+            linux/amd64
+            linux/arm64
+            
       - name: 生成TAG
         id: tag
         run: |
