@@ -92,5 +92,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{env.TAG}}-${{ env.release_tag }}
-          files: ${{env.UPLOAD_DIR}}/${DEBIAN_IMAGE}-${TAG}-rebuilt.tar
+          tag_name: ${{ env.TAG }}-${{ env.release_tag }}
+          files: ${{ env.UPLOAD_DIR }}/${{ env.DEBIAN_IMAGE }}-${{ env.TAG }}-rebuilt.tar
