@@ -75,6 +75,7 @@ jobs:
         run: |
           echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
+          docker image ls
 
       - name: 本地保存镜像
         id: save
