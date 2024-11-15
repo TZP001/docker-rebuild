@@ -69,7 +69,8 @@ jobs:
           context: ${{ env.WORKDIR }}
           push: false
           tags: ${{ env.DEBIAN_IMAGE}}:${{ env.TAG }}-rebuilt
-
+          file: ${{ env.WORKDIR }}/${{ env.TAG }}/Dockerfile
+          
       - name: 本地保存镜像
         run: |
           docker save ${DEBIAN_IMAGE}:${TAG}-rebuilt -o ${DEBIAN_IMAGE}:${TAG}-rebuilt.tar
