@@ -80,8 +80,7 @@ jobs:
         id: save
         if: steps.tag.outputs.status == 'success' && !cancelled()
         run: |
-          docker --load
-          cd ${WORKDIR}
+          for img in $(docker images -q); do echo "$img $(docker image inspect --format='{{.GraphDriver.Data.MergedDir}}' $img)"; done          cd ${WORKDIR}
           docker save ${DEBIAN_IMAGE}:${TAG}-rebuilt -o ${DEBIAN_IMAGE}-${TAG}-rebuilt.tar
           echo "UPLOAD_DIR=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
