@@ -69,7 +69,7 @@ jobs:
           context: ${{ env.WORKDIR }}/${{ env.TAG }}
           push: false
           tags: ${{ env.DEBIAN_IMAGE}}:${{ env.TAG }}-rebuilt
-          file: ./Dockerfile
+          # file: ./Dockerfile
           
       - name: 生成TAG
         if: steps.docker_build.status == 'completed'
