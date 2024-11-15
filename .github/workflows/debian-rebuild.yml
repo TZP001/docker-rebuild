@@ -7,8 +7,8 @@ on:
 env:
   DEBIAN_IMAGE: debian
   TAG: bullseye
-  DIY_DIR: diy
-  DIY_SH: novnc.sh
+  DIY_DIR: diy/debian
+  DIY_SH: docker-entrypoint.sh
   WORKDIR: debian
   BRANCH: dist-amd64
   REPO_URL: https://github.com/debuerreotype/docker-debian-artifacts
@@ -29,20 +29,28 @@ jobs:
         run: |
           git clone -b ${BRANCH} ${REPO_URL} ${WORKDIR}
           
-      - name: 添加文件
+      # - name: 直接添加文件进内部
+      #   run: |
+      #     cd ${WORKDIR}
+      #     cd ${TAG}
+      #     echo "解压 rootfs.tar.xz 文件"
+      #     mkdir -p tmp_tar_dir
+      #     tar -xf rootfs.tar.xz -C tmp_tar_dir
+      #     mkdir -p tmp_tar_dir/${DIY_DIR}
+      #     cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./tmp_tar_dir/${DIY_DIR}/${DIY_SH}
+      #     sudo chmod 755 ./tmp_tar_dir/${DIY_DIR}/${DIY_SH}
+      #     cd tmp_tar_dir
+      #     echo "重新打包 rootfs.tar.xz 文件"
+      #     tar -cJf ../rootfs.tar.xz .
+
+      - name: 添加启动脚本
         run: |
           cd ${WORKDIR}
           cd ${TAG}
-          echo "解压 rootfs.tar.xz 文件"
-          mkdir -p tmp_tar_dir
-          tar -xf rootfs.tar.xz -C tmp_tar_dir
-          mkdir -p tmp_tar_dir/${DIY_DIR}
-          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./tmp_tar_dir/${DIY_DIR}/${DIY_SH}
-          sudo chmod 755 ./tmp_tar_dir/${DIY_DIR}/${DIY_SH}
-          cd tmp_tar_dir
-          echo "重新打包 rootfs.tar.xz 文件"
-          tar -cJf ../rootfs.tar.xz .
-
+          echo "修改默认启动命令"
+          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./${DIY_SH}
+          echo ENTRYPOINT [\"${DIY_SH}\"] >> ./Dockerfile
+      
       - name: 生成镜像
         id: tag
         run: |
