@@ -74,7 +74,6 @@ jobs:
       - name: 生成TAG
         id: tag
         run: |
-          docker image load
           echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
           docker image ls
