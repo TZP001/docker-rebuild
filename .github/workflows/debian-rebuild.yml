@@ -55,7 +55,8 @@ jobs:
           sed -i '/CMD \[\"bash\"\]/d' ./Dockerfile
           echo "ADD docker/${DIY_SH} /" >> ./Dockerfile
           echo "WORKDIR /docker" >> ./Dockerfile
-          echo "ENTRYPOINT [\"./${DIY_SH}\"]" >> ./Dockerfile
+          # echo "ENTRYPOINT [\"./${DIY_SH}\"]" >> ./Dockerfile
+          echo CMD [\"bash\"] >> ./Dockerfile
           cat ./Dockerfile
       
       - name: 生成镜像
