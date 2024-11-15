@@ -1,7 +1,7 @@
 FROM debian:bullseye
 COPY diy/debian/entrypoint.sh /debian/entrypoint.sh
 # 添加执行权限
-RUN chmod +x /entrypoint.sh
+RUN chmod 777 /debian/entrypoint.sh
 
 WORKDIR /debian/
 VOLUME ["/debian/scripts/"]
