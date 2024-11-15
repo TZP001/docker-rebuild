@@ -2,18 +2,18 @@
 
 echo -e "======================1. 安装novnc远程桌面========================\n"
 # 安装必要软件
-packages=("procps" "net-tools" "inetutils-ping" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" )
+packages=("procps" "net-tools" "inetutils-ping" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" "expect" )
+apt-get update
 
 for package in "${packages[@]}"; do
-    if! dpkg -s "$package" >/dev/null 2>&1; then
-        apt-get update
+    if ! dpkg -s "$package" >/dev/null 2>&1; then
         apt-get install -y "$package"
     fi
 done
 
 NOVNCPort="${VNC_PASSWPRD:-5800}"
 # 自动设置VNC密码
-USER="${VNC_USERNAME:-VNCC}"
+export USER="${VNC_USERNAME:-VNCC}"
 vncpwd="${VNC_PASSWPRD:-123456}"
 expect << EOF
 	spawn vncpasswd
