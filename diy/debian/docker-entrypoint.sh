@@ -1,9 +1,5 @@
 #!/bin/bash
 
-dir_shell=/ql/shell
-. $dir_shell/share.sh
-. $dir_shell/env.sh
-
 echo -e "======================1. 安装novnc远程桌面========================\n"
 # 安装必要软件
 packages=("procps" "net-tools" "inetutils-ping" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" )
