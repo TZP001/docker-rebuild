@@ -39,7 +39,7 @@ jobs:
         with:
           context: .
           file: ./${{ env.DIY_DIR }}/Dockerfile
-          push: false
+          push: true
           tags: ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }}:rebuilt
           load: true
           platforms: |
