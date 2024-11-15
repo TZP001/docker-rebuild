@@ -52,7 +52,7 @@ jobs:
           echo "!docker" >> .dockerignore
           cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./docker/${DIY_SH}
           sudo chmod 755 ./docker/${DIY_SH}
-          sed '/CMD \[\"bash\"\]/d' ./Dockerfile
+          sed '/CMD \[\"bash\"\]/d' ./Dockerfile ./Dockerfile
           echo "ADD docker/${DIY_SH} /" >> ./Dockerfile
           echo "WORKDIR /docker" >> ./Dockerfile
           echo "ENTRYPOINT [\"./${DIY_SH}\"]" >> ./Dockerfile
