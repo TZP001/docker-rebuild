@@ -29,7 +29,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./${{ DIY_DIR }}/Dockerfile
+          file: ./${{ env.DIY_DIR }}/Dockerfile
           push: false
           tags: ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }}:rebuilt
           load: true
