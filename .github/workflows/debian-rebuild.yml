@@ -69,10 +69,8 @@ jobs:
           context: ${{ env.WORKDIR }}/${{ env.TAG }}
           push: false
           tags: ${{ env.DEBIAN_IMAGE}}:${{ env.TAG }}-rebuilt
-          # file: ./Dockerfile
           
       - name: 生成TAG
-        if: steps.docker_build.status == 'completed'
         id: tag
         run: |
           echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
