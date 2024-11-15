@@ -93,24 +93,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{env.TAG}}-${{ env.release_tag }}
-          files: ${{env.UPLOAD_DIR}}/${{env.DEBIAN_IMAGE}}:${{env.TAG}}-rebuilt.tar
-
-      # - name: 上传镜像
-      #   uses: actions/create-release@v1
-      #   id: createRelease
-      #   if: steps.tag.outputs.status == 'success' && !cancelled()
-      #   with:
-      #     tag_name: ${{ env.release_tag }}
-      #     release_name: Release ${{ env.release_tag }}
-      #     draft: false
-      #     prerelease: false
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: 上传release
-      #   uses: actions/upload-release-asset@v1
-      #   with:
-      #     upload_url: ${{ steps.createRelease.outputs.upload_url }}
-      #     asset_path: ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }}.tar
-      #     asset_name: ${{ env.DEBIAN_IMAGE }}_${{ env.TAG }}.tar
-      #     asset_content_type: application/x-tar
+          files: ${{env.UPLOAD_DIR}}/${DEBIAN_IMAGE}-${TAG}-rebuilt.tar
