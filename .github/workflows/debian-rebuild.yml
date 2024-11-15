@@ -33,9 +33,15 @@ jobs:
         run: |
           cd ${WORKDIR}
           cd ${TAG}
-          mkdir -p ${DIY_DIR}
-          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./${DIY_DIR}/${DIY_SH}
-          
+          echo "解压 rootfs.tar.xz 文件"
+          tar -xf rootfs.tar.xz -C tmp_tar_dir
+          mkdir -p tmp_tar_dir/${DIY_DIR}
+          cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./tmp_tar_dir/${DIY_DIR}/${DIY_SH}
+          sudo chmod 755 ./tmp_tar_dir/${DIY_DIR}/${DIY_SH}
+          cd tmp_tar_dir
+          echo "重新打包 rootfs.tar.xz 文件"
+          tar -cJf ../rootfs.tar.xz .
+
       - name: 生成镜像
         id: tag
         run: |
