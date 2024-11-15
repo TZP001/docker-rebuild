@@ -14,5 +14,7 @@ RUN chmod 777 /debian/entrypoint.sh
 
 WORKDIR /debian/
 
+EXPOSE 5800
+
 VOLUME ["/debian/scripts/"]
 ENTRYPOINT ["/debian/entrypoint.sh"]
