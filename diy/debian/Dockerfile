@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM alpine:latest
 LABEL maintainer="tzp001"
 LABEL name="debianDiy"
 
@@ -17,4 +17,5 @@ WORKDIR /debian/
 EXPOSE 5800
 
 VOLUME ["/debian/scripts/"]
-ENTRYPOINT ["/debian/entrypoint.sh"]
+
+CMD ["/debian/entrypoint.sh"]
