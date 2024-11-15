@@ -1,4 +1,5 @@
 FROM debian:bullseye as debian-diy
+LABEL previous-stage=debian-diy
 
 COPY diy/debian/entrypoint.sh /debian/entrypoint.sh
 
