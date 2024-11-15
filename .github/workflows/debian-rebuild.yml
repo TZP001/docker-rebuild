@@ -51,6 +51,8 @@ jobs:
           mkdir -p docker
           echo "!docker" >> ./.dockerignore
           cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./docker/${DIY_SH}
+          echo "RUN mkdir -p /docker" >> ./Dockerfile
+          echo "WORKDIR /docker" >> ./Dockerfile
           echo "COPY ./docker /docker" >> ./Dockerfile
           echo "RUN chmod +x /docker/${DIY_SH}" >> ./Dockerfile
           echo "ENTRYPOINT [\"/docker/${DIY_SH}\"]" >> ./Dockerfile
