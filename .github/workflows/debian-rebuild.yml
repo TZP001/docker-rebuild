@@ -34,17 +34,18 @@ jobs:
           cp $GITHUB_WORKSPACE/${DIY_DIR}/${DIY_SH} ./${DIY_DIR}/${DIY_SH}
           
       - name: 生成镜像
+        id: tag
         run: |
           cd ${WORKDIR}/${TAG}
           docker build -t ${DEBIAN_IMAGE}:${TAG}-rebuilt .
           docker save -o ${DEBIAN_IMAGE}:${TAG}-rebuilt.tar ${DEBIAN_IMAGE}:${TAG}-rebuilt
-          ls
-          
+          echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+          echo "UPLOAD_DIR=$PWD" >> $GITHUB_ENV          
           
       - name: 生成release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{env.TAG}}
-          files: ${{env.WORKDIR}}/${{env.TAG}}/${{env.DEBIAN_IMAGE}}:${{env.TAG}}-rebuilt.tar
+          tag_name: ${{env.TAG}}-${{ steps.tag.outputs.release_tag }}
+          files: ${{env.UPLOAD_DIR}}/${{env.TAG}}/${{env.DEBIAN_IMAGE}}:${{env.TAG}}-rebuilt.tar
