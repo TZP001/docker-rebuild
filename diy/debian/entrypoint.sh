@@ -11,7 +11,7 @@ for package in "${packages[@]}"; do
     fi
 done
 
-NOVNCPort="${VNC_PASSWPRD:-5800}"
+NOVNCPort="${NOVNCPort:-5800}"
 # 自动设置VNC密码
 export USER="${VNC_USERNAME:-VNCC}"
 vncpwd="${VNC_PASSWPRD:-123456}"
