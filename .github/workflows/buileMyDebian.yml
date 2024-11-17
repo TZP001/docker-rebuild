@@ -55,8 +55,9 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_USERNAME }}:${{ env.DEBIAN_IMAGE }}-slim
           load: true
           platforms: |
-            linux/amd64      # - name: 生成TAG
+            linux/amd64      
             
+      # - name: 生成TAG
       #   id: tag
       #   run: |
       #     echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
