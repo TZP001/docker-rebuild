@@ -13,7 +13,7 @@ RUN apt-get install -y "procps" "net-tools" "inetutils-ping" "xfce4" "xfce4-good
 # 换清华源
 RUN cp -rp /etc/apt/sources.list.d /etc/apt/sources.list.d.bak 
 RUN for file in /etc/apt/sources.list.d/*; do \ 
-        sed -i "s/http:\/\/deb.debian.org/https:\/\/mirrors.tuna.tsinghua.edu.cn/g" "$file" \
+        sed -i "s/http:\/\/deb.debian.org/https:\/\/mirrors.tuna.tsinghua.edu.cn/g" "$file"; \
     done
 
 COPY debian/entrypoint.sh /debian/entrypoint.sh
