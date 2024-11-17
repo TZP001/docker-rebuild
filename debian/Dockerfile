@@ -10,10 +10,12 @@ RUN mkdir -p /debian && \
 RUN apt-get update
 RUN apt-get install -y "procps" "net-tools" "inetutils-ping" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" "expect" "figlet"
 
-COPY diy/debian/entrypoint.sh /debian/entrypoint.sh
+COPY debian/entrypoint.sh /debian/entrypoint.sh
+COPY debian/install_deb.sh /debian/install_deb.sh
 
 # 添加执行权限
 RUN chmod 777 /debian/entrypoint.sh
+RUN chmod 777 /debian/install_deb.sh
 
 WORKDIR /debian/
 
