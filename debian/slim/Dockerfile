@@ -14,6 +14,12 @@ COPY debian/slim//install_deb.sh /debian/install_deb.sh
 RUN chmod 777 /debian/entrypoint.sh
 RUN chmod 777 /debian/install_deb.sh
 
+# 换清华源
+RUN cp -rp /etc/apt/sources.list.d /etc/apt/sources.list.d.bak 
+RUN for file in /etc/apt/sources.list.d/*; do \ 
+        sed -i "s/http:\/\/deb.debian.org/https:\/\/mirrors.tuna.tsinghua.edu.cn/g" "$file" \
+    done
+    
 EXPOSE 5800
 
 VOLUME ["/debian/scripts/"]
