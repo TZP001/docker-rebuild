@@ -1,18 +1,18 @@
-FROM debian:bullseye
+FROM debian:trixie-backports
 LABEL maintainer="tzp001"
-LABEL name="debianDiy"
+LABEL name="DiyDebian"
 
 ENV TZ="Asia/Shanghai"
 
 RUN mkdir -p /debian && \
     mkdir -p /debian/scripts
     
-COPY diy/debian/entrypoint.sh /debian/entrypoint.sh
+COPY debian/slim/entrypoint.sh /debian/entrypoint.sh
+COPY debian/slim//install_deb.sh /debian/install_deb.sh
 
 # 添加执行权限
 RUN chmod 777 /debian/entrypoint.sh
-
-WORKDIR /debian/
+RUN chmod 777 /debian/install_deb.sh
 
 EXPOSE 5800
 
