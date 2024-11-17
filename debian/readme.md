@@ -1,3 +1,4 @@
+## Diy-Debian-full
 ### 使用方法
 ```
 docker run -it \
@@ -18,3 +19,9 @@ docker run -it \
 * 通过```/debian/scripts/env```文件可以重新设置环境变量
 * 通过```RUN_RPO```可以设置/usr/bin/grass自动启动，为了方便自己设置的
 * 所有以上变量均可通过```/debian/scripts/env```文件重新设置
+---------------
+### 注意
+* 需要后台运行使用类似下面的命令
+  ```
+  nohub "$program" > /dev/null 2>&1 &
+  ```
