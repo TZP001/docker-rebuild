@@ -49,7 +49,7 @@ pgrep -f websockify > /dev/null && pgrep -f websockify | xargs kill -9
 rm -rf /tmp/.X*lock
 rm -rf /tmp/.X*unix
 tightvncserver -geometry 1024x768 -depth 24 -port 5901
-echo "" > /usr/share/novnc/点击上面三个带有vnc的都能访问
+cp /usr/share/novnc/vnc.html '/usr/share/novnc/Click Here!!!'
 websockify -D --web=/usr/share/novnc $NOVNCPort localhost:5901
 
 echo -e "======================4. 运行镜像内部自定义程序========================\n"
