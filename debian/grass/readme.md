@@ -3,6 +3,7 @@
 * 集成grass
 * 在容器中运行grass，没有注册的可以用我的邀请码 ```HvC7SY9DIqWLTTz```
 * 注册点击[这里](https://app.getgrass.io/register/?referralCode=HvC7SY9DIqWLTTz)
+----------------
 ### 使用方法
 ```
 docker run -it \
