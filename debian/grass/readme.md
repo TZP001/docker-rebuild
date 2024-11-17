@@ -24,3 +24,5 @@ docker run -it \
 * 通过```/debian/scripts/env```文件可以重新设置环境变量
 * 通过```RUN_RPO```可以设置/usr/bin/grass自动启动，为了方便自己设置的
 * 所有以上变量均可通过```/debian/scripts/env```文件重新设置
+### 小小疑惑
+* 为什么使用的其它大神的容器，cpu使用那么高呢，先观察两天再说
