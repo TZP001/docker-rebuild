@@ -1,0 +1,75 @@
+name: GRASS
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  
+env:
+  DEBIAN_IMAGE: grass
+  TAG: bullseye
+  DIY_DIR: debian
+  TZ: Asia/Shanghai
+  
+jobs:
+  debianRebuild:
+    runs-on: ubuntu-latest
+    
+    permissions:  #release权限
+      contents: write
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 生成镜像
+        id: docker_build
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./${{ env.DIY_DIR }}/grass/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_USERNAME }}:${{ env.DEBIAN_IMAGE }}
+          load: true
+          platforms: |
+            linux/amd64      
+            
+      # - name: 生成TAG
+      #   id: tag
+      #   run: |
+      #     echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
+      #     echo "status=success" >> $GITHUB_OUTPUT
+
+      # - name: 本地保存镜像
+      #   id: save
+      #   if: steps.tag.outputs.status == 'success' && !cancelled()
+      #   run: |
+      #     docker image save ${{ env.DEBIAN_IMAGE }} -o ${DEBIAN_IMAGE}-${TAG}-rebuilt.tar
+      #     echo "UPLOAD_DIR=$PWD" >> $GITHUB_ENV
+      #     echo "status=success" >> $GITHUB_OUTPUT
+          
+      # - name: 生成release
+      #   uses: softprops/action-gh-release@v1
+      #   if: steps.save.outputs.status == 'success' && !cancelled()
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ env.TAG }}-${{ env.release_tag }}
+      #     files: ${{ env.UPLOAD_DIR }}/${{ env.DEBIAN_IMAGE }}-${{ env.TAG }}-rebuilt.tar
+
+      - name: Delete Workflow Runs
+        uses: GitRML/delete-workflow-runs@main
+        with:
+          retain_days: 30
+          keep_minimum_runs: 10
