@@ -47,7 +47,7 @@ pgrep -f websockify > /dev/null && pgrep -f websockify | xargs kill -9
 rm -rf /tmp/.X*lock
 rm -rf /tmp/.X*unix
 tightvncserver -geometry 1024x768 -depth 24 -port 5901
-cp /usr/share/novnc/vnc.html '/usr/share/novnc/Click Here!!!'
+echo "" > '/usr/share/novnc/Click 【vnc.html】!!! NOT ME!!!'
 websockify -D --web=/usr/share/novnc $NOVNCPort localhost:5901
 
 echo -e "======================4. 检测自定义脚本是否存在========================\n"
