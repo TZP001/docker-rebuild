@@ -10,6 +10,12 @@ RUN mkdir -p /debian && \
 RUN apt-get update
 RUN apt-get install -y "procps" "net-tools" "inetutils-ping" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" "expect" "figlet"
 
+# 换清华源
+RUN cp -rp /etc/apt/sources.list.d /etc/apt/sources.list.d.bak 
+RUN for file in /etc/apt/sources.list.d/*; do \ 
+        sed -i "s/http:\/\/deb.debian.org/https:\/\/mirrors.tuna.tsinghua.edu.cn/g" "$file" \
+    done
+
 COPY debian/entrypoint.sh /debian/entrypoint.sh
 COPY debian/install_deb.sh /debian/install_deb.sh
 
