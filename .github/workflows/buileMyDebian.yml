@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   
 env:
-  DEBIAN_IMAGE: DiyDebian
+  DEBIAN_IMAGE: diy-debian
   TAG: bullseye
   DIY_DIR: debian
   TZ: Asia/Shanghai
@@ -40,7 +40,7 @@ jobs:
           context: .
           file: ./${{ env.DIY_DIR }}/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.DEBIAN_IMAGE }}:full
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_USERNAME }}:${{ env.DEBIAN_IMAGE }}-full
           load: true
           platforms: |
             linux/amd64
@@ -52,7 +52,7 @@ jobs:
           context: .
           file: ./${{ env.DIY_DIR }}/slim/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.DEBIAN_IMAGE }}:slim
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_USERNAME }}:${{ env.DEBIAN_IMAGE }}-slim
           load: true
           platforms: |
             linux/amd64      # - name: 生成TAG
