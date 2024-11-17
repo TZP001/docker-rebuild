@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
   
 env:
-  DEBIAN_IMAGE: debian
+  DEBIAN_IMAGE: DiyDebian
   TAG: bullseye
-  DIY_DIR: diy/debian
+  DIY_DIR: debian
   TZ: Asia/Shanghai
   
 jobs:
@@ -40,12 +40,23 @@ jobs:
           context: .
           file: ./${{ env.DIY_DIR }}/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.DEBIAN_IMAGE }}:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.DEBIAN_IMAGE }}:full
           load: true
           platforms: |
             linux/amd64
+
+      - name: 生成镜像2
+        id: docker_build_slim
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./${{ env.DIY_DIR }}/slim/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.DEBIAN_IMAGE }}:slim
+          load: true
+          platforms: |
+            linux/amd64      # - name: 生成TAG
             
-      # - name: 生成TAG
       #   id: tag
       #   run: |
       #     echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
