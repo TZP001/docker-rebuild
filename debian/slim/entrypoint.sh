@@ -4,7 +4,7 @@ UPDATE=true
 dpkg -s "figlet" >/dev/null 2>&1 && figlet Diy Debian && UPDATE=false
 echo -e "======================1. 安装novnc远程桌面========================\n"
 # 安装必要软件
-packages=("procps" "net-tools" "inetutils-ping" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" "expect" "figlet")
+packages=("procps" "net-tools" "inetutils-ping" "wget" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" "expect" "figlet")
 
 if $UPDATE; then
     for package in "${packages[@]}"; do
