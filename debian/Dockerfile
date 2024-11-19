@@ -8,7 +8,7 @@ RUN mkdir -p /debian && \
     mkdir -p /debian/scripts
     
 RUN apt-get update
-RUN apt-get install -y "procps" "net-tools" "inetutils-ping" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" "expect" "figlet"
+RUN apt-get install -y "procps" "net-tools" "inetutils-ping" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" "expect" "wget" "figlet"
 
 # 换清华源
 RUN cp -rp /etc/apt/sources.list.d /etc/apt/sources.list.d.bak 
