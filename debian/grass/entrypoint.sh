@@ -68,4 +68,7 @@ fi
 echo -e "安装本地deb包失败，可以用/debian/install_deb.sh脚本安装"
 echo -e "使用方法：/debian/install_deb.sh xx.deb"
 
-bash   #这个不能取消，否则脚本运行完，容器将重启
+# 检查是否存在PID为1的进程，但排除当前进程
+if ! ps -p 1 -o pid= | grep -v "^$$" > /dev/null; then
+    bash   #这个不能取消，否则脚本运行完，容器将重启
+fi
