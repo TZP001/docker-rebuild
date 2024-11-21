@@ -45,8 +45,8 @@ expect << EOF
 	expect eof
 EOF
 
-pgrep -f tightvnc > /dev/null && pgrep -f tightvnc | xargs kill -9
-pgrep -f websockify > /dev/null && pgrep -f websockify | xargs kill -9
+pgrep -f tightvnc > /dev/null && pgrep -f tightvnc | xargs -n 1 kill -9
+pgrep -f websockify > /dev/null && pgrep -f websockify | xargs -n 1 kill -9
 rm -rf /tmp/.X*lock
 rm -rf /tmp/.X*unix
 tightvncserver :1 -geometry 1600x900 -depth 24 -port 5901
