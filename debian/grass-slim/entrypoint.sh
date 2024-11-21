@@ -1,10 +1,11 @@
 #!/bin/bash
+figlet Grass Slim 
 
 UPDATE=true
-dpkg -s "figlet" >/dev/null 2>&1 && figlet Grass Slim && UPDATE=false
+dpkg -s "expect" >/dev/null 2>&1 && UPDATE=false
 echo -e "======================1. 安装novnc远程桌面========================\n"
 # 安装必要软件
-packages=("procps" "net-tools" "inetutils-ping" "wget" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" "expect" "figlet")
+packages=("procps" "net-tools" "inetutils-ping" "wget" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" "expect")
 
 if $UPDATE; then
     apt-get update
@@ -43,13 +44,16 @@ expect << EOF
 	expect eof
 EOF
 
-pgrep -f tightvnc > /dev/null && pgrep -f tightvnc | xargs kill -9
-pgrep -f websockify > /dev/null && pgrep -f websockify | xargs kill -9
+pgrep -f tightvnc > /dev/null && pgrep -f tightvnc | xargs -n 1 kill -9
+pgrep -f websockify > /dev/null && pgrep -f websockify | xargs -n 1 kill -9
 rm -rf /tmp/.X*lock
 rm -rf /tmp/.X*unix
-tightvncserver -geometry 1024x768 -depth 24 -port 5901
+tightvncserver :1 -geometry 1600x900 -depth 24 -port 5901
 echo "" > '/usr/share/novnc/Click 【vnc.html】!!! NOT ME!!!'
 websockify -D --web=/usr/share/novnc $NOVNCPort localhost:5901
+
+# 设置屏幕
+export DISPLAY=$(hostname)":1"
 
 echo -e "======================4. 检测自定义脚本是否存在========================\n"
 
