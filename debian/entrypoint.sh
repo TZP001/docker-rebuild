@@ -80,7 +80,7 @@ program="/usr/bin/grass"
 
 if [ -f "$program" ] && [ "$RUN_RPO" = "true" ]; then
   # 文件存在，执行文件
-  nohub "$program" > /dev/null 2>&1 &
+  "$program"  &
 elif [ "$RUN_RPO" != "true" ]; then
   echo -e "未定义RUN_PRO,不执行$program \n"
 else
