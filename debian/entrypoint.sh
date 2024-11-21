@@ -9,15 +9,15 @@ echo  -e "NOVNCPort、VNC_USERNAME、VNC_PASSWPRD、RUN_RPO可以在“$DIY_ENV_
 if [ -f "$DIY_ENV_FILE" ]; then
     echo -e "检测到$DIY_ENV_FILE 文件，重新设置相应环境变量\n"
     # 读取 env 文件
-    while IFS= read -r line; do
+    while IFS= read -r line || [ -n "$line" ]; do
         # 提取变量名和值
         var=$(echo "$line" | cut -d'=' -f1 | cut -d' ' -f2)
         value=$(echo "$line" | cut -d'=' -f2)
     
         # 判断变量是否存在且值是否相等
         if [ -z "${!var}" ] || [ "${!var}"!= "$value" ]; then
-            sed -i "/export $var=/d"  ~/.bashrc
-            echo "export $var=$value" >> ~/.bashrc
+            sed -i "/export $var=/d"  /etc/profile
+            echo "export $var=$value" >> /etc/profile
     	fi
     done < "$DIY_ENV_FILE"
 elif [ ! -f "$DIY_ENV_FILE" ]; then
@@ -25,13 +25,16 @@ elif [ ! -f "$DIY_ENV_FILE" ]; then
 fi
 
 # 设置屏幕
-echo 'export DISPLAY=$(hostname)":1"' >>  ~/.bashrc
+HOSTNAME=$(hostname)
+sed -i "/export DISPLAY=/d" /etc/profile
+echo "export DISPLAY=${HOSTNAME}:1" >> /etc/profile
 # 设置用户名
-sed -i "/export USER=/d"  ~/.bashrc
-echo "export USER=${VNC_USERNAME:-VNCC}" >> ~/.bashrc
+sed -i "/export USER=/d" /etc/profile
+echo "export USER=${VNC_USERNAME:-VNCC}" >> /etc/profile
 
 # 环境变量立即生效
-source ~/.bashrc
+source /etc/profile
+export
 
 # 获取环境变量
 NOVNCPort="${NOVNCPort:-5800}"
@@ -80,7 +83,7 @@ program="/usr/bin/grass"
 
 if [ -f "$program" ] && [ "$RUN_RPO" = "true" ]; then
   # 文件存在，执行文件
-  "$program"  &
+  $program > /dev/null 2>&1 &
 elif [ "$RUN_RPO" != "true" ]; then
   echo -e "未定义RUN_PRO,不执行$program \n"
 else
