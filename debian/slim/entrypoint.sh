@@ -7,6 +7,7 @@ echo -e "======================1. 安装novnc远程桌面=======================
 packages=("procps" "net-tools" "inetutils-ping" "wget" "xfce4" "xfce4-goodies" "xorg" "dbus-x11" "x11-xserver-utils" "tightvncserver" "novnc" "expect" "figlet")
 
 if $UPDATE; then
+    apt-get update
     for package in "${packages[@]}"; do
         if ! dpkg -s "$package" >/dev/null 2>&1; then
             apt-get install -y "$package"
