@@ -16,7 +16,7 @@ RUN chmod 777 /debian/install_deb.sh
 
 # 安装ssl支持
 RUN apt-get update
-RUN apt install -y ca-certificates
+RUN apt install -y ca-certificates figlet
 
 # 换清华源
 RUN cp -rp /etc/apt/sources.list.d /etc/apt/sources.list.d.bak 
