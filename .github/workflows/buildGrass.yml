@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   
 env:
-  DEBIAN_IMAGE: grass
+  DEBIAN_IMAGE: grass_4.28.2
   TAG: bullseye
   DIY_DIR: debian
   TZ: Asia/Shanghai
