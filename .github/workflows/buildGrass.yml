@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   
 env:
-  DEBIAN_IMAGE: grass_4.29.0
+  DEBIAN_IMAGE: grass
   TAG: bullseye
   DIY_DIR: debian
   TZ: Asia/Shanghai
@@ -45,6 +45,17 @@ jobs:
           platforms: |
             linux/amd64      
             
+      - name: 生成镜像
+        id: docker_build_1
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./${{ env.DIY_DIR }}/grass-slim/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_USERNAME }}:${{ env.DEBIAN_IMAGE }}-slim
+          load: true
+          platforms: |
+            linux/amd64           
       # - name: 生成TAG
       #   id: tag
       #   run: |
