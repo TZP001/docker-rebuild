@@ -34,7 +34,6 @@ echo "export USER=${VNC_USERNAME:-VNCC}" >> /etc/profile
 
 # 环境变量立即生效
 source /etc/profile
-export
 
 # 获取环境变量
 NOVNCPort="${NOVNCPort:-5800}"
